@@ -2,7 +2,7 @@
 
 - Dual citizen: 🇫🇷 and 🇨🇦.
 
-- 💼 Software Engineer at [Red Hat](https://www.redhad.com).
+- 💼 Software Engineer at [Red Hat](https://www.redhat.com).
 
 - 📈 I work on OpenShift and OpenStack projects.
 
