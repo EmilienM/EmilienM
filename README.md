@@ -10,9 +10,7 @@
 
 - 💬 You can reach me out via my blog or Linkedin.
 
-| <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api?username=emilienm&show_icons=true&include_all_commits=true&theme=transparent&hide_border=true" alt="Emilien's github stats" /></a> | <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=emilienm&layout=compact&theme=transparent&hide_border=true" /></a> |
-| ------------- | ------------- |
-
+<a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api?username=emilienm&show_icons=true&include_all_commits=true&theme=transparent&hide_border=true" alt="Emilien's github stats" /></a>
 #### Top Repositories
 
 <a href="https://github.com/gophercloud/gophercloud">
