@@ -1,6 +1,6 @@
-**About me**
+<h1>HELLO THERE!</h1>
 
-- I'm 🇫🇷 and 🇨🇦.
+- Dual citizen: 🇫🇷 and 🇨🇦.
 
 - 💼 Software Engineer at [Red Hat](https://www.redhad.com).
 
