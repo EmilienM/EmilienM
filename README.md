@@ -21,3 +21,6 @@
 <a href="https://github.com/kubernetes-sigs/cluster-api-provider-openstack">
   <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=kubernetes-sigs&repo=cluster-api-provider-openstack&theme=transparent" />
 </a>
+<a href="https://github.com/openshift/hypershift">
+  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=openshift&repo=hypershift&theme=transparent" />
+</a>
