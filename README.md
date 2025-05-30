@@ -4,7 +4,7 @@
 
 - 💼 Senior Principal Software Engineer at [Red Hat](https://www.redhat.com).
 
-- 📈 I work on Kubernetes and OpenStack projects.
+- 📈 My current focus is productizing AI, but I also worked on Kubernetes and OpenStack projects.
 
 - ❤️ I love Open-Source, and everything about Infrastructure.
 
