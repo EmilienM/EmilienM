@@ -48,7 +48,7 @@ MONO = (
     "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, "
     "'Liberation Mono', monospace"
 )
-TYPE_SIZE = 17
+TYPE_SIZE = 15
 TYPE_SLOT = 4.5  # seconds each tagline stays on screen
 
 THEMES = {
@@ -65,7 +65,6 @@ THEMES = {
         "track": "#cde2fb",
         "violet": "#4a3aa7",
         "orange": "#eb6834",
-        "aqua": "#1baf7a",
         "glow": "0.22",
     },
     "dark": {
@@ -81,7 +80,6 @@ THEMES = {
         "track": "#0d366b",
         "violet": "#9085e9",
         "orange": "#d95926",
-        "aqua": "#199e70",
         "glow": "0.30",
     },
 }
@@ -315,28 +313,23 @@ def keyframes(name: str, frames: list[tuple[float, float, int | None]]) -> str:
 
 
 def render_header(t: dict) -> str:
-    width, height = 860, 240
+    width, height = 860, 150
     char = TYPE_SIZE * 0.6
-    x, y = 48 + 2 * char, 204
+    x, y = 48 + 2 * char, 126
     cycle = TYPE_SLOT * len(TAGLINES)
 
     css = """
-.spin { animation: spin 24s linear infinite; }
-.orbit-a { animation: spin 11s linear infinite; }
-.orbit-b { animation: spin 17s linear infinite reverse; }
-.orbit-c { animation: spin 29s linear infinite; }
 .drift-a { animation: drift-a 16s ease-in-out infinite; }
 .drift-b { animation: drift-b 21s ease-in-out infinite; }
 .blink { animation: blink 1.1s step-end infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes drift-a { 50% { transform: translate(-40px, 24px); } }
-@keyframes drift-b { 50% { transform: translate(30px, -20px); } }
+@keyframes drift-a { 50% { transform: translate(-40px, 16px); } }
+@keyframes drift-b { 50% { transform: translate(30px, -14px); } }
 @keyframes blink { 50% { opacity: 0; } }
 """
     clips, lines, cursor_frames = [], [], []
     for line in TAGLINES:
-        if x + (len(line) + 1) * char > 600:
-            raise SystemExit(f"Tagline too long, it would hit the wheel: {line!r}")
+        if x + (len(line) + 1) * char > width - 48:
+            raise SystemExit(f"Tagline too long for the banner: {line!r}")
     for i, line in enumerate(TAGLINES):
         span = len(line) * char
         frames = typing_frames(i, len(TAGLINES), span, len(line))
@@ -351,7 +344,7 @@ def render_header(t: dict) -> str:
         )
         clips.append(
             f'<clipPath id="clip-{i}"><rect class="type-{i}" '
-            f'x="{x - span:.1f}" y="{y - 20}" width="{span:.1f}" height="28"/>'
+            f'x="{x - span:.1f}" y="{y - 16}" width="{span:.1f}" height="22"/>'
             f"</clipPath>"
         )
         lines.append(
@@ -366,15 +359,10 @@ def render_header(t: dict) -> str:
         f"animation: cursor {cycle}s infinite; }}\n"
     )
 
-    spokes = "".join(
-        f'<line x1="{18 * math.cos(a):.1f}" y1="{18 * math.sin(a):.1f}" '
-        f'x2="{58 * math.cos(a):.1f}" y2="{58 * math.sin(a):.1f}"/>'
-        for a in (k * math.pi / 4 for k in range(8))
-    )
     body = f"""<defs>
 <clipPath id="frame"><rect width="{width}" height="{height}" rx="16"/></clipPath>
 <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
-<feGaussianBlur stdDeviation="42"/></filter>
+<feGaussianBlur stdDeviation="36"/></filter>
 <linearGradient id="name" x1="0" x2="1">
 <stop offset="0" stop-color="{t["accent"]}"/>
 <stop offset="1" stop-color="{t["violet"]}"/></linearGradient>
@@ -390,43 +378,27 @@ def render_header(t: dict) -> str:
 <g clip-path="url(#frame)">
 <rect width="{width}" height="{height}" fill="{t["surface"]}"/>
 <g filter="url(#blur)" opacity="{t["glow"]}">
-<circle class="drift-a" cx="700" cy="70" r="120" fill="{t["accent"]}"/>
-<circle class="drift-b" cx="820" cy="210" r="100" fill="{t["violet"]}"/>
-<circle class="drift-a" cx="560" cy="250" r="70" fill="{t["orange"]}"/>
+<circle class="drift-a" cx="700" cy="40" r="100" fill="{t["accent"]}"/>
+<circle class="drift-b" cx="820" cy="140" r="80" fill="{t["violet"]}"/>
+<circle class="drift-a" cx="580" cy="170" r="60" fill="{t["orange"]}"/>
 </g>
 <rect width="{width}" height="{height}" fill="url(#dots)" mask="url(#fade-mask)"
  opacity="0.45"/>
 </g>
 <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" rx="16"
  fill="none" stroke="{t["border"]}"/>
-<text x="48" y="60" font-size="12" font-weight="600" letter-spacing="3"
+<text x="48" y="36" font-size="11" font-weight="600" letter-spacing="3"
  fill="{t["accent_text"]}">HELLO THERE!</text>
-<text x="46" y="110" font-size="46" font-weight="700"
+<text x="47" y="72" font-size="34" font-weight="700"
  fill="url(#name)">{esc(NAME)}</text>
-<text x="48" y="142" font-size="18" font-weight="600"
- fill="{t["ink"]}">{esc(ROLE)}</text>
-<text x="48" y="166" font-size="15" fill="{t["ink2"]}">{esc(TEAM)}</text>
+<text x="48" y="98" font-size="15"><tspan font-weight="600"
+ fill="{t["ink"]}">{esc(ROLE)}</tspan><tspan
+ fill="{t["ink2"]}"> · {esc(TEAM)}</tspan></text>
 <text class="mono" x="48" y="{y}" font-size="{TYPE_SIZE}" font-weight="700"
  fill="{t["accent_text"]}">$</text>
 {"".join(lines)}
-<g class="cursor"><rect class="blink" x="{x + 2:.1f}" y="{y - 15}"
- width="{char * 0.6:.1f}" height="19" rx="1" fill="{t["accent"]}"/></g>
-<g transform="translate(720 124)">
-<circle r="96" fill="none" stroke="{t["muted"]}" stroke-opacity="0.4"/>
-<g class="spin">
-<g stroke="{t["accent"]}" stroke-width="3" stroke-linecap="round">{spokes}</g>
-<circle r="58" fill="none" stroke="{t["accent"]}" stroke-width="6"/>
-</g>
-<circle r="20" fill="{t["surface"]}" stroke="{t["accent"]}" stroke-width="4"/>
-<text class="mono" y="4" font-size="10" font-weight="700" text-anchor="middle"
- fill="{t["ink"]}">.whl</text>
-<g class="orbit-a"><circle cx="96" r="7" fill="{t["orange"]}"
- stroke="{t["surface"]}" stroke-width="2"/></g>
-<g class="orbit-b"><circle cx="-96" r="6" fill="{t["aqua"]}"
- stroke="{t["surface"]}" stroke-width="2"/></g>
-<g class="orbit-c"><circle cy="-96" r="5" fill="{t["violet"]}"
- stroke="{t["surface"]}" stroke-width="2"/></g>
-</g>"""
+<g class="cursor"><rect class="blink" x="{x + 2:.1f}" y="{y - 13}"
+ width="{char * 0.6:.1f}" height="16" rx="1" fill="{t["accent"]}"/></g>"""
     title = f"{NAME}, {ROLE}, {TEAM}"
     return document(width, height, title, css, body)
 
