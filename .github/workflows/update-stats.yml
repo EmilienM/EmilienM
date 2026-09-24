@@ -1,0 +1,48 @@
+name: Update profile stats
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/generate.py
+      - .github/workflows/update-stats.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-stats
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Check out the branch tip, not the triggering commit, so a queued run
+      # doesn't render on top of a stale tree and get its push rejected.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Render cards
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROFILE_USER: ${{ github.repository_owner }}
+        run: python3 scripts/generate.py --user "$PROFILE_USER"
+
+      - name: Commit changes
+        run: |
+          set -euo pipefail
+          git add assets README.md
+          if git diff --cached --quiet; then
+            echo "Cards are up to date"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update profile stats"
+          git push || { git pull --rebase && git push; }
