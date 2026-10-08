@@ -2,8 +2,8 @@
 """Render the SVG cards for the GitHub profile README.
 
 Pulls public contribution data from the GitHub GraphQL API, writes a light and
-a dark variant of each card to assets/, and refreshes the generated block in
-README.md (image alt text and the table view).
+a dark variant of each card to assets/, and refreshes the generated blocks in
+README.md (image alt text, links and the table view).
 
     GITHUB_TOKEN=$(gh auth token) python3 scripts/generate.py
 """
@@ -18,6 +18,7 @@ import math
 import os
 import pathlib
 import re
+import textwrap
 import time
 import urllib.error
 import urllib.request
@@ -39,6 +40,30 @@ TAGLINES = [
 ]
 # Years whose work mostly happened off GitHub, called out on the yearly chart.
 OFF_GITHUB = (2012, 2019, "OpenStack years: most of the work lived on Gerrit")
+# Repos that are one body of work, shown as one row on the "Lately" card:
+# name -> (blurb, repos). The first repo is the one the row links to. Forks
+# fold into their parent on their own, and repos not listed here show up under
+# their own name with their description as the blurb.
+AREAS = {
+    "OpenShell": (
+        "The safe, private runtime for autonomous AI agents",
+        ["NVIDIA/OpenShell", "opendatahub-io/openshell-dashboard"],
+    ),
+    "Agentic CI": (
+        "Running AI coding agents in CI to fix bugs and review PRs",
+        [
+            "opendatahub-io/agentic-ci",
+            "opendatahub-io/autofix-skills",
+            "opendatahub-io/code-review-skills",
+            "opendatahub-io/ai-helpers",
+            "opendatahub-io/skills-registry",
+        ],
+    ),
+}
+LATELY_DAYS = 42  # how far back the "Lately" card looks, in whole weeks
+LATELY_MIN_ACTIVE = 5  # active days an area needs to count as steady work
+LATELY_RECENT = 14  # and it must have some activity in this many last days
+LATELY_MAX = 3  # rows on the card
 
 SANS = (
     "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', "
@@ -91,6 +116,13 @@ METRICS = [
     ("reviews", "Code reviews"),
     ("issues", "Issues"),
 ]
+# METRICS keys as counted on the "Lately" card, with their singular noun.
+LATELY_UNITS = [
+    ("commits", "commit"),
+    ("pull_requests", "PR"),
+    ("reviews", "review"),
+    ("issues", "issue"),
+]
 
 YEARS_QUERY = """
 query($login: String!) {
@@ -121,6 +153,38 @@ query($login: String!, $from: DateTime!, $to: DateTime!) {{
 }}
 """
 
+# Aliased to the LATELY_UNITS keys. Commit contributions are one node per day
+# with a commitCount, the others one node per pull request, review or issue.
+LATELY_REPO = """repository {
+    nameWithOwner description isPrivate
+    parent { nameWithOwner description }
+  }"""
+
+LATELY_QUERY = f"""
+query($login: String!, $from: DateTime!, $to: DateTime!) {{
+  user(login: $login) {{
+    contributionsCollection(from: $from, to: $to) {{
+      commits: commitContributionsByRepository(maxRepositories: 100) {{
+        {LATELY_REPO}
+        contributions(first: 100) {{ nodes {{ occurredAt commitCount }} }}
+      }}
+      pull_requests: pullRequestContributionsByRepository(maxRepositories: 100) {{
+        {LATELY_REPO}
+        contributions(first: 100) {{ totalCount nodes {{ occurredAt }} }}
+      }}
+      reviews: pullRequestReviewContributionsByRepository(maxRepositories: 100) {{
+        {LATELY_REPO}
+        contributions(first: 100) {{ totalCount nodes {{ occurredAt }} }}
+      }}
+      issues: issueContributionsByRepository(maxRepositories: 100) {{
+        {LATELY_REPO}
+        contributions(first: 100) {{ totalCount nodes {{ occurredAt }} }}
+      }}
+    }}
+  }}
+}}
+"""
+
 BASE_CSS = f"""
 text {{ font-family: {SANS}; }}
 .mono {{ font-family: {MONO}; }}
@@ -145,6 +209,23 @@ class Stats:
 
     def total(self, key: str) -> int:
         return sum(year[key] for year in self.years.values())
+
+
+@dataclasses.dataclass
+class Area:
+    name: str
+    repo: str  # the nameWithOwner the area links to
+    blurb: str
+    days: list[int]  # contributions per day over LATELY_DAYS, oldest first
+    counts: collections.Counter[str]  # keyed like METRICS
+
+    @property
+    def url(self) -> str:
+        return f"https://github.com/{self.repo}"
+
+    @property
+    def active(self) -> int:
+        return sum(1 for count in self.days if count)
 
 
 def graphql(query: str, variables: dict, token: str) -> dict:
@@ -221,6 +302,68 @@ def fetch(login: str, token: str) -> Stats:
     return Stats(years, languages, len(repositories))
 
 
+def area_for(repo: dict) -> tuple[str, str]:
+    """Area name and linked repo for a repository, its parent, or AREAS."""
+    names = [repo["nameWithOwner"]]
+    if repo["parent"]:
+        names.append(repo["parent"]["nameWithOwner"])
+    for name in names:
+        for area, (_, repos) in AREAS.items():
+            if name.lower() in (listed.lower() for listed in repos):
+                return area, repos[0]
+    return names[-1], names[-1]
+
+
+def fetch_lately(login: str, token: str, today: datetime.date) -> list[Area]:
+    """Areas with steady public activity lately, the most active days first."""
+    start = today - datetime.timedelta(days=LATELY_DAYS - 1)
+    variables = {
+        "login": login,
+        "from": f"{start.isoformat()}T00:00:00Z",
+        "to": f"{today.isoformat()}T23:59:59Z",
+    }
+    data = graphql(LATELY_QUERY, variables, token)["contributionsCollection"]
+    descriptions: dict[str, str] = {}
+    areas: dict[str, Area] = {}
+    for key, items in data.items():
+        for item in items:
+            repo = item["repository"]
+            if repo["isPrivate"]:
+                continue
+            for known in (repo, repo["parent"]):
+                if known and known["description"]:
+                    descriptions[known["nameWithOwner"].lower()] = known["description"]
+            name, home = area_for(repo)
+            if name not in areas:
+                areas[name] = Area(
+                    name, home, "", [0] * LATELY_DAYS, collections.Counter()
+                )
+            area = areas[name]
+            # Active days come from at most 100 nodes per repo and type; only
+            # repos far busier than the cut-off would ever lose a day to it.
+            for node in item["contributions"]["nodes"]:
+                occurred = datetime.date.fromisoformat(node["occurredAt"][:10])
+                day = (occurred - start).days
+                if 0 <= day < LATELY_DAYS:
+                    count = node["commitCount"] if key == "commits" else 1
+                    area.days[day] += count
+                    if key == "commits":
+                        area.counts[key] += count
+            if key != "commits":
+                area.counts[key] += item["contributions"]["totalCount"]
+    for area in areas.values():
+        if area.name in AREAS:
+            area.blurb = AREAS[area.name][0]
+        else:
+            area.blurb = descriptions.get(area.repo.lower(), "")
+    steady = [
+        area for area in areas.values()
+        if area.active >= LATELY_MIN_ACTIVE and any(area.days[-LATELY_RECENT:])
+    ]
+    steady.sort(key=lambda area: (area.active, sum(area.days)), reverse=True)
+    return steady[:LATELY_MAX]
+
+
 def esc(value: str) -> str:
     return html.escape(value, quote=True)
 
@@ -231,6 +374,18 @@ def compact(value: int) -> str:
 
 def percent(value: float) -> str:
     return "<1%" if value < 1 else f"{value:.0f}%"
+
+
+def plural(count: int, noun: str) -> str:
+    return f"{count:,} {noun}{'' if count == 1 else 's'}"
+
+
+def activity(area: Area) -> str:
+    return " · ".join(
+        plural(area.counts[key], noun)
+        for key, noun in LATELY_UNITS
+        if area.counts[key]
+    )
 
 
 def document(width: int, height: int, title: str, css: str, body: str) -> str:
@@ -516,6 +671,54 @@ def render_years(t: dict, stats: Stats, today: datetime.date) -> str:
     return document(width, height, years_alt(stats), "", body)
 
 
+def render_lately(t: dict, areas: list[Area]) -> str:
+    width, row = 860, 68
+    height = 84 + row * len(areas)
+    cell, pitch = 7, 9
+    sx = width - 24 - (pitch * LATELY_DAYS - (pitch - cell))
+    # Shade busy days by quartile of all non-empty days, like GitHub's calendar.
+    busy = sorted(count for area in areas for count in area.days if count)
+    cuts = [busy[len(busy) * k // 4] for k in (1, 2, 3)]
+    shades = (0.35, 0.55, 0.78, 1)
+    body = card(
+        t, width, height, "Lately",
+        f"Steady public work over the last {LATELY_DAYS // 7} weeks, "
+        "one square per day",
+    )
+    for i, area in enumerate(areas):
+        y = 92 + i * row
+        body += (
+            f'<g class="fade" style="animation-delay:{i * 120}ms">'
+            f'<rect x="24" y="{y - 14}" width="3" height="50" rx="1.5" '
+            f'fill="{t["accent"]}"/>'
+            f'<text x="36" y="{y}" font-size="15" font-weight="600" '
+            f'fill="{t["ink"]}">{esc(area.name)}</text>'
+        )
+        lines = textwrap.wrap(area.blurb, 64, max_lines=2, placeholder=" …")
+        for k, line in enumerate(lines):
+            body += (
+                f'<text x="36" y="{y + 20 + k * 16}" font-size="12" '
+                f'fill="{t["ink2"]}">{esc(line)}</text>'
+            )
+        for j, count in enumerate(area.days):
+            if count:
+                level = sum(count >= cut for cut in cuts)
+                fill = f'fill="{t["accent"]}" fill-opacity="{shades[level]}"'
+            else:
+                fill = f'fill="{t["grid"]}"'
+            body += (
+                f'<rect x="{sx + j * pitch}" y="{y - 11}" width="{cell}" '
+                f'height="{cell}" rx="1.5" {fill}/>'
+            )
+        body += (
+            f'<text x="{width - 24}" y="{y + 20}" font-size="12" '
+            f'text-anchor="end" fill="{t["ink2"]}"><tspan font-weight="600" '
+            f'fill="{t["ink"]}">{plural(area.active, "active day")}</tspan>'
+            f" · {esc(activity(area))}</text></g>\n"
+        )
+    return document(width, height, lately_alt(areas), "", body)
+
+
 def stats_alt(stats: Stats) -> str:
     parts = [f"{stats.total(key):,} {label.lower()}" for key, label in METRICS]
     parts.append(f"{stats.repositories:,} repositories contributed to")
@@ -534,6 +737,14 @@ def years_alt(stats: Stats) -> str:
         f"Contributions per year from {years[0]} to {years[-1]}, peaking at "
         f"{stats.years[peak]['contributions']:,} in {peak}"
     )
+
+
+def lately_alt(areas: list[Area]) -> str:
+    parts = [
+        f"{area.name}, {plural(area.active, 'active day')} ({activity(area)})"
+        for area in areas
+    ]
+    return f"Lately, over the last {LATELY_DAYS // 7} weeks: " + "; ".join(parts)
 
 
 def picture(name: str, alt: str, width: int) -> str:
@@ -588,14 +799,35 @@ def readme_block(stats: Stats, today: datetime.date) -> str:
     ])
 
 
-def update_readme(stats: Stats, today: datetime.date) -> None:
-    start, end = "<!-- stats:start -->", "<!-- stats:end -->"
-    pattern = re.compile(re.escape(start) + ".*?" + re.escape(end), re.S)
+def lately_block(areas: list[Area]) -> str:
+    """The "Lately" section, empty when nothing counts as steady work."""
+    lines = ["<!-- Generated by scripts/generate.py: edits here are overwritten. -->"]
+    if areas:
+        links = " · ".join(f"[{area.repo}]({area.url})" for area in areas)
+        lines += [
+            "",
+            "### Lately",
+            "",
+            '<p align="center">',
+            picture("lately", lately_alt(areas), 860),
+            "</p>",
+            "",
+            f"<sub>Repos: {links}</sub>",
+        ]
+    return "\n".join(lines)
+
+
+def readme_text(blocks: dict[str, str]) -> str:
+    """README.md with each name's <!-- name:start/end --> block replaced."""
     text = README.read_text(encoding="utf-8")
-    if not pattern.search(text):
-        raise SystemExit(f"README.md is missing the {start} / {end} markers")
-    block = f"{start}\n{readme_block(stats, today)}\n{end}"
-    README.write_text(pattern.sub(lambda _: block, text), encoding="utf-8")
+    for name, content in blocks.items():
+        start, end = f"<!-- {name}:start -->", f"<!-- {name}:end -->"
+        pattern = re.compile(re.escape(start) + ".*?" + re.escape(end), re.S)
+        if not pattern.search(text):
+            raise SystemExit(f"README.md is missing the {start} / {end} markers")
+        block = f"{start}\n{content}\n{end}"
+        text = pattern.sub(lambda _: block, text)
+    return text
 
 
 def main() -> None:
@@ -614,6 +846,7 @@ def main() -> None:
     if not stats.years:
         raise SystemExit(f"No contributions found for {args.user!r}")
     today = datetime.datetime.now(datetime.timezone.utc).date()
+    areas = fetch_lately(args.user, token, today)
     # Render everything before writing so a failure leaves no half-updated tree.
     cards = {}
     for mode, theme in THEMES.items():
@@ -621,10 +854,20 @@ def main() -> None:
         cards[f"stats-{mode}.svg"] = render_stats(theme, stats)
         cards[f"languages-{mode}.svg"] = render_languages(theme, stats)
         cards[f"years-{mode}.svg"] = render_years(theme, stats, today)
+        if areas:
+            cards[f"lately-{mode}.svg"] = render_lately(theme, areas)
+    readme = readme_text({
+        "stats": readme_block(stats, today),
+        "lately": lately_block(areas),
+    })
     ASSETS.mkdir(exist_ok=True)
     for name, content in cards.items():
         (ASSETS / name).write_text(content, encoding="utf-8")
-    update_readme(stats, today)
+    # With no steady work the section is hidden, so drop its stale cards too.
+    if not areas:
+        for mode in THEMES:
+            (ASSETS / f"lately-{mode}.svg").unlink(missing_ok=True)
+    README.write_text(readme, encoding="utf-8")
 
 
 if __name__ == "__main__":
