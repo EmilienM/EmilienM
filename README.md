@@ -30,7 +30,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
-  <img alt="GitHub at a glance: 8,091 contributions, 3,607 commits, 2,005 pull requests, 1,339 code reviews, 322 issues, 232 repositories contributed to" src="assets/stats-light.svg" width="420">
+  <img alt="GitHub at a glance: 8,100 contributions, 3,607 commits, 2,006 pull requests, 1,344 code reviews, 323 issues, 232 repositories contributed to" src="assets/stats-light.svg" width="420">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/languages-dark.svg">
@@ -40,7 +40,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/years-dark.svg">
-  <img alt="Contributions per year from 2012 to 2026, peaking at 2,179 in 2026" src="assets/years-light.svg" width="860">
+  <img alt="Contributions per year from 2012 to 2026, peaking at 2,188 in 2026" src="assets/years-light.svg" width="860">
 </picture>
 </p>
 
@@ -49,7 +49,7 @@
 
 | Year | Contributions | Commits | Pull requests | Code reviews | Issues |
 |---:|---:|---:|---:|---:|---:|
-| 2026 (YTD) | 2,179 | 814 | 376 | 545 | 128 |
+| 2026 (YTD) | 2,188 | 814 | 377 | 550 | 129 |
 | 2025 | 1,404 | 516 | 227 | 212 | 46 |
 | 2024 | 1,182 | 517 | 334 | 266 | 39 |
 | 2023 | 840 | 410 | 246 | 144 | 19 |
@@ -64,7 +64,7 @@
 | 2014 | 75 | 2 | 63 | 0 | 10 |
 | 2013 | 15 | 7 | 5 | 0 | 3 |
 | 2012 | 2 | 0 | 0 | 0 | 1 |
-| **Total** | **8,091** | **3,607** | **2,005** | **1,339** | **322** |
+| **Total** | **8,100** | **3,607** | **2,006** | **1,344** | **323** |
 
 | Language | Share of commits |
 |---|---:|
@@ -76,5 +76,5 @@
 
 </details>
 
-<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-10-07.</sub>
+<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-10-08.</sub>
 <!-- stats:end -->
