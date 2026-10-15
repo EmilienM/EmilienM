@@ -25,7 +25,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/lately-dark.svg">
-  <img alt="Lately, over the last 6 weeks: Agentic CI, 27 active days (51 commits · 7 PRs · 96 reviews); OpenShell, 24 active days (5 commits · 18 PRs · 44 reviews · 5 issues); opendatahub-io/odh-konflux-central, 5 active days (8 commits · 2 PRs · 3 reviews)" src="assets/lately-light.svg" width="860">
+  <img alt="Lately, over the last 6 weeks: Agentic CI, 26 active days (50 commits · 7 PRs · 94 reviews); OpenShell, 23 active days (5 commits · 17 PRs · 44 reviews · 5 issues); opendatahub-io/odh-konflux-central, 5 active days (8 commits · 2 PRs · 3 reviews)" src="assets/lately-light.svg" width="860">
 </picture>
 </p>
 
@@ -45,17 +45,17 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
-  <img alt="GitHub at a glance: 8,162 contributions, 3,616 commits, 2,009 pull requests, 1,359 code reviews, 326 issues, 233 repositories contributed to" src="assets/stats-light.svg" width="420">
+  <img alt="GitHub at a glance: 8,197 contributions, 3,620 commits, 2,013 pull requests, 1,361 code reviews, 328 issues, 235 repositories contributed to" src="assets/stats-light.svg" width="420">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/languages-dark.svg">
-  <img alt="Top languages by commits: Python 30%, Shell 25%, Go 21%, HTML 11%, Jinja 6%" src="assets/languages-light.svg" width="420">
+  <img alt="Top languages by commits: Python 30%, Shell 24%, Go 21%, HTML 11%, Jinja 6%" src="assets/languages-light.svg" width="420">
 </picture>
 </p>
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/years-dark.svg">
-  <img alt="Contributions per year from 2012 to 2026, peaking at 2,251 in 2026" src="assets/years-light.svg" width="860">
+  <img alt="Contributions per year from 2012 to 2026, peaking at 2,286 in 2026" src="assets/years-light.svg" width="860">
 </picture>
 </p>
 
@@ -64,7 +64,7 @@
 
 | Year | Contributions | Commits | Pull requests | Code reviews | Issues |
 |---:|---:|---:|---:|---:|---:|
-| 2026 (YTD) | 2,251 | 823 | 380 | 565 | 132 |
+| 2026 (YTD) | 2,286 | 827 | 384 | 567 | 134 |
 | 2025 | 1,403 | 516 | 227 | 212 | 46 |
 | 2024 | 1,182 | 517 | 334 | 266 | 39 |
 | 2023 | 840 | 410 | 246 | 144 | 19 |
@@ -79,17 +79,17 @@
 | 2014 | 75 | 2 | 63 | 0 | 10 |
 | 2013 | 15 | 7 | 5 | 0 | 3 |
 | 2012 | 2 | 0 | 0 | 0 | 1 |
-| **Total** | **8,162** | **3,616** | **2,009** | **1,359** | **326** |
+| **Total** | **8,197** | **3,620** | **2,013** | **1,361** | **328** |
 
 | Language | Share of commits |
 |---|---:|
 | Python | 30% |
-| Shell | 25% |
+| Shell | 24% |
 | Go | 21% |
 | HTML | 11% |
 | Jinja | 6% |
 
 </details>
 
-<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-10-14.</sub>
+<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-10-15.</sub>
 <!-- stats:end -->
