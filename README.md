@@ -25,7 +25,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/lately-dark.svg">
-  <img alt="Lately, over the last 6 weeks: Agentic CI, 26 active days (48 commits · 7 PRs · 91 reviews); OpenShell, 24 active days (5 commits · 17 PRs · 44 reviews · 6 issues); opendatahub-io/odh-konflux-central, 5 active days (8 commits · 2 PRs · 3 reviews)" src="assets/lately-light.svg" width="860">
+  <img alt="Lately, over the last 6 weeks: Agentic CI, 25 active days (45 commits · 7 PRs · 88 reviews); OpenShell, 25 active days (5 commits · 20 PRs · 46 reviews · 9 issues); opendatahub-io/odh-konflux-central, 5 active days (8 commits · 2 PRs · 3 reviews)" src="assets/lately-light.svg" width="860">
 </picture>
 </p>
 
@@ -45,7 +45,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
-  <img alt="GitHub at a glance: 8,315 contributions, 3,620 commits, 2,015 pull requests, 1,363 code reviews, 330 issues, 234 repositories contributed to" src="assets/stats-light.svg" width="420">
+  <img alt="GitHub at a glance: 8,358 contributions, 3,620 commits, 2,018 pull requests, 1,365 code reviews, 333 issues, 234 repositories contributed to" src="assets/stats-light.svg" width="420">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/languages-dark.svg">
@@ -55,7 +55,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/years-dark.svg">
-  <img alt="Contributions per year from 2012 to 2026, peaking at 2,403 in 2026" src="assets/years-light.svg" width="860">
+  <img alt="Contributions per year from 2012 to 2026, peaking at 2,446 in 2026" src="assets/years-light.svg" width="860">
 </picture>
 </p>
 
@@ -64,7 +64,7 @@
 
 | Year | Contributions | Commits | Pull requests | Code reviews | Issues |
 |---:|---:|---:|---:|---:|---:|
-| 2026 (YTD) | 2,403 | 828 | 388 | 569 | 136 |
+| 2026 (YTD) | 2,446 | 828 | 391 | 571 | 139 |
 | 2025 | 1,403 | 516 | 227 | 212 | 46 |
 | 2024 | 1,182 | 517 | 334 | 266 | 39 |
 | 2023 | 840 | 410 | 246 | 144 | 19 |
@@ -79,7 +79,7 @@
 | 2014 | 75 | 2 | 63 | 0 | 10 |
 | 2013 | 15 | 7 | 5 | 0 | 3 |
 | 2012 | 2 | 0 | 0 | 0 | 1 |
-| **Total** | **8,315** | **3,620** | **2,015** | **1,363** | **330** |
+| **Total** | **8,358** | **3,620** | **2,018** | **1,365** | **333** |
 
 | Language | Share of commits |
 |---|---:|
@@ -91,5 +91,5 @@
 
 </details>
 
-<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-10-18.</sub>
+<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-10-19.</sub>
 <!-- stats:end -->
