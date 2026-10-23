@@ -25,11 +25,11 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/lately-dark.svg">
-  <img alt="Lately, over the last 6 weeks: Agentic CI, 25 active days (36 commits · 9 PRs · 81 reviews); OpenShell, 24 active days (5 commits · 19 PRs · 46 reviews · 9 issues); opendatahub-io/odh-konflux-central, 6 active days (9 commits · 2 PRs · 3 reviews)" src="assets/lately-light.svg" width="860">
+  <img alt="Lately, over the last 6 weeks: OpenShell, 26 active days (6 commits · 19 PRs · 49 reviews · 10 issues); Agentic CI, 25 active days (36 commits · 9 PRs · 81 reviews); opendatahub-io/odh-konflux-central, 6 active days (9 commits · 2 PRs · 3 reviews)" src="assets/lately-light.svg" width="860">
 </picture>
 </p>
 
-<sub>Repos: [opendatahub-io/agentic-ci](https://github.com/opendatahub-io/agentic-ci) · [NVIDIA/OpenShell](https://github.com/NVIDIA/OpenShell) · [opendatahub-io/odh-konflux-central](https://github.com/opendatahub-io/odh-konflux-central)</sub>
+<sub>Repos: [NVIDIA/OpenShell](https://github.com/NVIDIA/OpenShell) · [opendatahub-io/agentic-ci](https://github.com/opendatahub-io/agentic-ci) · [opendatahub-io/odh-konflux-central](https://github.com/opendatahub-io/odh-konflux-central)</sub>
 <!-- lately:end -->
 
 ### Tools of the trade
@@ -45,7 +45,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
-  <img alt="GitHub at a glance: 8,482 contributions, 3,629 commits, 2,024 pull requests, 1,385 code reviews, 333 issues, 237 repositories contributed to" src="assets/stats-light.svg" width="420">
+  <img alt="GitHub at a glance: 8,503 contributions, 3,637 commits, 2,026 pull requests, 1,391 code reviews, 335 issues, 237 repositories contributed to" src="assets/stats-light.svg" width="420">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/languages-dark.svg">
@@ -55,7 +55,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/years-dark.svg">
-  <img alt="Contributions per year from 2012 to 2026, peaking at 2,570 in 2026" src="assets/years-light.svg" width="860">
+  <img alt="Contributions per year from 2012 to 2026, peaking at 2,591 in 2026" src="assets/years-light.svg" width="860">
 </picture>
 </p>
 
@@ -64,7 +64,7 @@
 
 | Year | Contributions | Commits | Pull requests | Code reviews | Issues |
 |---:|---:|---:|---:|---:|---:|
-| 2026 (YTD) | 2,570 | 837 | 397 | 591 | 139 |
+| 2026 (YTD) | 2,591 | 845 | 399 | 597 | 141 |
 | 2025 | 1,403 | 516 | 227 | 212 | 46 |
 | 2024 | 1,182 | 517 | 334 | 266 | 39 |
 | 2023 | 840 | 410 | 246 | 144 | 19 |
@@ -79,7 +79,7 @@
 | 2014 | 75 | 2 | 63 | 0 | 10 |
 | 2013 | 15 | 7 | 5 | 0 | 3 |
 | 2012 | 2 | 0 | 0 | 0 | 1 |
-| **Total** | **8,482** | **3,629** | **2,024** | **1,385** | **333** |
+| **Total** | **8,503** | **3,637** | **2,026** | **1,391** | **335** |
 
 | Language | Share of commits |
 |---|---:|
@@ -91,5 +91,5 @@
 
 </details>
 
-<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-10-22.</sub>
+<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-10-23.</sub>
 <!-- stats:end -->
