@@ -25,7 +25,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/lately-dark.svg">
-  <img alt="Lately, over the last 6 weeks: OpenShell, 28 active days (6 commits · 18 PRs · 61 reviews · 10 issues); Agentic CI, 22 active days (31 commits · 9 PRs · 69 reviews); openclaw/openclaw-enterprise, 6 active days (6 PRs · 5 reviews · 1 issue)" src="assets/lately-light.svg" width="860">
+  <img alt="Lately, over the last 6 weeks: OpenShell, 27 active days (5 commits · 15 PRs · 61 reviews · 10 issues); Agentic CI, 21 active days (29 commits · 9 PRs · 67 reviews); openclaw/openclaw-enterprise, 6 active days (6 PRs · 5 reviews · 1 issue)" src="assets/lately-light.svg" width="860">
 </picture>
 </p>
 
@@ -91,5 +91,5 @@
 
 </details>
 
-<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-11-01.</sub>
+<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-11-02.</sub>
 <!-- stats:end -->
