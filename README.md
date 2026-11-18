@@ -25,11 +25,11 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/lately-dark.svg">
-  <img alt="Lately, over the last 6 weeks: OpenShell, 24 active days (12 commits · 19 PRs · 62 reviews · 23 issues); Agentic CI, 16 active days (19 commits · 3 PRs · 53 reviews); openclaw/openclaw-enterprise, 16 active days (15 PRs · 7 reviews · 6 issues)" src="assets/lately-light.svg" width="860">
+  <img alt="Lately, over the last 6 weeks: OpenShell, 24 active days (13 commits · 19 PRs · 60 reviews · 22 issues); openclaw/openclaw-enterprise, 17 active days (1 commit · 15 PRs · 7 reviews · 6 issues); Agentic CI, 15 active days (19 commits · 3 PRs · 52 reviews)" src="assets/lately-light.svg" width="860">
 </picture>
 </p>
 
-<sub>Repos: [NVIDIA/OpenShell](https://github.com/NVIDIA/OpenShell) · [opendatahub-io/agentic-ci](https://github.com/opendatahub-io/agentic-ci) · [openclaw/openclaw-enterprise](https://github.com/openclaw/openclaw-enterprise)</sub>
+<sub>Repos: [NVIDIA/OpenShell](https://github.com/NVIDIA/OpenShell) · [openclaw/openclaw-enterprise](https://github.com/openclaw/openclaw-enterprise) · [opendatahub-io/agentic-ci](https://github.com/opendatahub-io/agentic-ci)</sub>
 <!-- lately:end -->
 
 ### Tools of the trade
@@ -45,7 +45,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
-  <img alt="GitHub at a glance: 9,637 contributions, 3,687 commits, 2,061 pull requests, 1,475 code reviews, 357 issues, 240 repositories contributed to" src="assets/stats-light.svg" width="420">
+  <img alt="GitHub at a glance: 9,723 contributions, 3,689 commits, 2,061 pull requests, 1,480 code reviews, 357 issues, 240 repositories contributed to" src="assets/stats-light.svg" width="420">
 </picture>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/languages-dark.svg">
@@ -55,7 +55,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/years-dark.svg">
-  <img alt="Contributions per year from 2012 to 2026, peaking at 3,725 in 2026" src="assets/years-light.svg" width="860">
+  <img alt="Contributions per year from 2012 to 2026, peaking at 3,811 in 2026" src="assets/years-light.svg" width="860">
 </picture>
 </p>
 
@@ -64,7 +64,7 @@
 
 | Year | Contributions | Commits | Pull requests | Code reviews | Issues |
 |---:|---:|---:|---:|---:|---:|
-| 2026 (YTD) | 3,725 | 895 | 434 | 681 | 163 |
+| 2026 (YTD) | 3,811 | 897 | 434 | 686 | 163 |
 | 2025 | 1,403 | 516 | 227 | 212 | 46 |
 | 2024 | 1,182 | 517 | 334 | 266 | 39 |
 | 2023 | 840 | 410 | 246 | 144 | 19 |
@@ -79,7 +79,7 @@
 | 2014 | 75 | 2 | 63 | 0 | 10 |
 | 2013 | 15 | 7 | 5 | 0 | 3 |
 | 2012 | 2 | 0 | 0 | 0 | 1 |
-| **Total** | **9,637** | **3,687** | **2,061** | **1,475** | **357** |
+| **Total** | **9,723** | **3,689** | **2,061** | **1,480** | **357** |
 
 | Language | Share of commits |
 |---|---:|
@@ -91,5 +91,5 @@
 
 </details>
 
-<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-11-17.</sub>
+<sub>Cards regenerated daily by [a GitHub Action](.github/workflows/update-stats.yml). Last update: 2026-11-18.</sub>
 <!-- stats:end -->
